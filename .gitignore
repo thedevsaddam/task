@@ -1,0 +1,7 @@
+.idea
+.DS_Store
+*/.DS_Store
+task
+.task.json
+vendor/*
+!vendor/vendor.json
