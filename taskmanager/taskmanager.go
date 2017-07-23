@@ -27,7 +27,7 @@ type Task struct {
 type Tasks []Task
 
 const (
-	DB_FILE     = "task.json"
+	DB_FILE     = ".task.json"
 	TIME_LAYOUT = "Mon, 01/02/06, 03:04PM"
 )
 
