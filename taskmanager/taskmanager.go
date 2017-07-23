@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strconv"
 	"time"
+	"os/user"
 )
 
 type Task struct {
@@ -26,8 +27,8 @@ type Task struct {
 type Tasks []Task
 
 const (
-	DB_FILE_PATH = "./.task.json"
-	TIME_LAYOUT  = "Mon, 01/02/06, 03:04PM"
+	DB_FILE     = "task.json"
+	TIME_LAYOUT = "Mon, 01/02/06, 03:04PM"
 )
 
 func New() Tasks {
@@ -259,10 +260,21 @@ func uid() string {
 	return fmt.Sprintf("%x-%x-%x-%x-%x", uuid[0:4], uuid[4:6], uuid[6:8], uuid[8:10], uuid[10:])
 }
 
+//get file path
+func dbFile() string {
+	usr, err := user.Current()
+
+	if err != nil {
+		panic(err)
+
+	}
+	return usr.HomeDir + "/" + DB_FILE
+}
+
 //load database
 func readDBFile() Tasks {
 	//load the json to task
-	file, e := ioutil.ReadFile(DB_FILE_PATH)
+	file, e := ioutil.ReadFile(dbFile())
 	if e != nil {
 		fmt.Printf("File error: %v\n", e)
 		os.Exit(1)
@@ -276,7 +288,7 @@ func readDBFile() Tasks {
 func writeDBFile(tasks Tasks) {
 	removeDBFileIfExist()
 	taskJson, _ := json.Marshal(tasks)
-	e := ioutil.WriteFile(DB_FILE_PATH, taskJson, 0644)
+	e := ioutil.WriteFile(dbFile(), taskJson, 0644)
 	if e != nil {
 		fmt.Printf("File error: %v\n", e)
 		os.Exit(1)
@@ -285,15 +297,15 @@ func writeDBFile(tasks Tasks) {
 
 //create a db file if not exist
 func createDBFileIfNotExist() {
-	if _, err := os.Stat(DB_FILE_PATH); os.IsNotExist(err) {
-		os.Create(DB_FILE_PATH)
+	if _, err := os.Stat(dbFile()); os.IsNotExist(err) {
+		os.Create(dbFile())
 	}
 }
 
 //delete a db file if exist
 func removeDBFileIfExist() {
-	if _, err := os.Stat(DB_FILE_PATH); !os.IsNotExist(err) {
-		os.Remove(DB_FILE_PATH)
+	if _, err := os.Stat(dbFile()); !os.IsNotExist(err) {
+		os.Remove(dbFile())
 	}
 }
 
