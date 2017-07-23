@@ -8,10 +8,10 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"os/user"
 	"sort"
 	"strconv"
 	"time"
-	"os/user"
 )
 
 type Task struct {
@@ -262,8 +262,12 @@ func uid() string {
 
 //get file path
 func dbFile() string {
-	usr, err := user.Current()
+	env := os.Getenv("TASK_DB_FILE_PATH")
+	if env != "" {
+		return env
+	}
 
+	usr, err := user.Current()
 	if err != nil {
 		panic(err)
 
