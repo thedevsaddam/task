@@ -11,6 +11,7 @@ import (
 	"os/user"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -264,7 +265,11 @@ func uid() string {
 func dbFile() string {
 	env := os.Getenv("TASK_DB_FILE_PATH")
 	if env != "" {
-		return env
+		if strings.HasSuffix(env, ".json") {
+			return env
+		} else {
+			return env + "/" + DB_FILE
+		}
 	}
 
 	usr, err := user.Current()
