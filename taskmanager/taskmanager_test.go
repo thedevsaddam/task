@@ -1,6 +1,7 @@
 package taskmanager
 
 import (
+	"os/user"
 	"testing"
 )
 
@@ -159,6 +160,13 @@ func TestTasks_FlushDB(t *testing.T) {
 	err := tm.FlushDB()
 	if err != nil {
 		t.Error("Failed to flush database!")
+	}
+}
+
+func TestTasks_dbFile(t *testing.T) {
+	usr, _ := user.Current()
+	if dbFile() != usr.HomeDir+"/.task.json" {
+		t.Error("Task file path incorrect!")
 	}
 }
 
