@@ -12,6 +12,16 @@ $ sudo chmod +x /usr/local/bin/task
 ```
 For windows download the binary and set environment variable so that you can access the binary from terminal
 
+### Custom File Path
+If you are interested to sync the task in dropbox/google drive, you can set a custom path. To set a custom path
+ open your `.bashrc` or `.bash_profile` and add this line `export TASK_DB_FILE_PATH=Your file path`
+ 
+ Example File path
+ ```bash
+export TASK_DB_FILE_PATH=/home/thedevsaddam/Dropbox  # default file name will be .task.json
+export TASK_DB_FILE_PATH=/home/thedevsaddam/Dropbox/mytasks.json
+```
+
 ### Usage
 * List all the tasks
     ```bash
