@@ -269,7 +269,7 @@ func dbFile() string {
 		if strings.HasSuffix(env, ".json") {
 			return env
 		} else {
-			return filepath.Join(env, DB_FILE)
+			return filepath.Join(filepath.Clean(env), DB_FILE)
 		}
 	}
 

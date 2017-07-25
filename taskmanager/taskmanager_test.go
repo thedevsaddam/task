@@ -1,10 +1,8 @@
 package taskmanager
 
 import (
-	"os"
 	"os/user"
 	"path/filepath"
-	"strings"
 	"testing"
 )
 
@@ -168,7 +166,7 @@ func TestTasks_FlushDB(t *testing.T) {
 
 func TestTasks_dbFile(t *testing.T) {
 	usr, _ := user.Current()
-	if dbFile() != filepath.Join(usr.HomeDir, ".task.json") {
+	if dbFile() != filepath.Join(filepath.Clean(usr.HomeDir), ".task.json") {
 		t.Error("Task file path incorrect!")
 	}
 }
