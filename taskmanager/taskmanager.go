@@ -16,17 +16,19 @@ import (
 	"time"
 )
 
-type Task struct {
-	Id          int    `json:"id"`
-	UID         string `json:"uid"`
-	Description string `json:"description"`
-	Tag         string `json:"tag"`
-	Created     string `json:"created"`
-	Updated     string `json:"updated"`
-	Completed   string `json:"completed"`
-}
+type (
+	Task struct {
+		Id          int    `json:"id"`
+		UID         string `json:"uid"`
+		Description string `json:"description"`
+		Tag         string `json:"tag"`
+		Created     string `json:"created"`
+		Updated     string `json:"updated"`
+		Completed   string `json:"completed"`
+	}
 
-type Tasks []Task
+	Tasks []Task
+)
 
 const (
 	DB_FILE     = ".task.json"
