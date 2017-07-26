@@ -172,31 +172,45 @@ func TestTasks_dbFile(t *testing.T) {
 }
 
 func BenchmarkTasks_Add(b *testing.B) {
-	for _, task := range tasksList {
-		tm.Add(task.description, task.tag)
+	for n := 0; n < b.N; n++ {
+		for _, task := range tasksList {
+			tm.Add(task.description, task.tag)
+		}
 	}
 }
 
 func BenchmarkTasks_GetAllTasks(b *testing.B) {
-	tm.GetAllTasks()
+	for n := 0; n < b.N; n++ {
+		tm.GetAllTasks()
+	}
 }
 
-func BenchmarkTasks_GetCompletedTasks(t *testing.B) {
-	tm.GetCompletedTasks()
+func BenchmarkTasks_GetCompletedTasks(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		tm.GetCompletedTasks()
+	}
 }
 
 func BenchmarkTasks_GetPendingTasks(b *testing.B) {
-	tm.GetPendingTasks()
+	for n := 0; n < b.N; n++ {
+		tm.GetPendingTasks()
+	}
 }
 
 func BenchmarkTasks_GetTask(b *testing.B) {
-	tm.GetTask(2)
+	for n := 0; n < b.N; n++ {
+		tm.GetTask(2)
+	}
 }
 
 func BenchmarkTasks_MarkAsCompleteTask(b *testing.B) {
-	tm.MarkAsCompleteTask(1)
+	for n := 0; n < b.N; n++ {
+		tm.MarkAsCompleteTask(1)
+	}
 }
 
 func BenchmarkTasks_MarkAsPendingTask(b *testing.B) {
-	tm.MarkAsPendingTask(3)
+	for n := 0; n < b.N; n++ {
+		tm.MarkAsPendingTask(3)
+	}
 }
