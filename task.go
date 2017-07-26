@@ -63,6 +63,10 @@ func main() {
 	case cmd == "" || cmd == "l" || cmd == "ls" && argsLen == 1:
 		showTasksInTable(tm.GetAllTasks())
 	case cmd == "a" || cmd == "add" && argsLen >= 1:
+		if len(args[1:]) <= 0 {
+			warningText(" Task description can not be empty \n")
+			return
+		}
 		tm.Add(strings.Join(args[1:], " "), "")
 		successText(" Added to list: " + strings.Join(args[1:], " ") + " ")
 	case cmd == "p" || cmd == "pending" && argsLen == 1:
