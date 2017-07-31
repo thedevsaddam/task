@@ -87,5 +87,10 @@ In unix system use
 $ sh build.sh
 ```
 
+### Roadmap
+- [ ] Add reminder
+- [ ] Desktop notifier
+- [ ] Code review
+
 ### **License**
 The **task** is a open-source software licensed under the [MIT License](LICENSE.md).
