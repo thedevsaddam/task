@@ -7,6 +7,12 @@
 			"revision": ""
 		},
 		{
+			"checksumSHA1": "aFYuxZ9WmM4Ywp3wCIVox9g3bew=",
+			"path": "github.com/0xAX/notificator",
+			"revision": "6bcea42e61381c13704c7fb6eb2438950f335832",
+			"revisionTime": "2017-05-28T18:13:08Z"
+		},
+		{
 			"checksumSHA1": "ErMS+JDb3UuJQiCNovvknd/xeJ4=",
 			"path": "github.com/AlekSi/pointer",
 			"revision": "08a25bac605b3fcb6cc27f3917b2c2c87451963d",

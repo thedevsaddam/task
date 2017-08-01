@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/0xAX/notificator"
 	"github.com/fatih/color"
 	"github.com/olebedev/when"
 	"github.com/olebedev/when/rules/common"
@@ -30,6 +31,8 @@ const USAGE = `Usage:
 		Show all pending tasks
 	$ task a Watch Games of thrones
 		Add a new task [Watch Games of thrones] to list
+	$ task remind Call John tomorrow at 10:30pm
+		This will send you a desktop notification
 	$ task del
 		Remove latest task from list
 	$ task rm ID
@@ -53,8 +56,12 @@ const (
 	REFRESH_RATE     = 40
 )
 
-//task manager instance
-var tm = taskmanager.New()
+var (
+	//task manager instance
+	tm = taskmanager.New()
+	//notifier
+	notify *notificator.Notificator
+)
 
 func main() {
 
@@ -81,8 +88,9 @@ func main() {
 			return
 		}
 		reminder := strings.Join(args[1:], " ")
-		tm.Add(reminder, "", getReminderTime(reminder))
-		successText(" Reminder Added: " + strings.Join(args[1:], " ") + " ")
+		action, action_when := parseReminder(reminder)
+		tm.Add(action, "", action_when)
+		successText(" Reminder Added: " + action + " ")
 	case cmd == "p" || cmd == "pending" && argsLen == 1:
 		showTasksInTable(tm.GetPendingTasks())
 	case cmd == "del" || cmd == "delete" && argsLen == 1:
@@ -251,7 +259,7 @@ func pendingMark() string {
 	return pending
 }
 
-func getReminderTime(reminder string) string {
+func parseReminder(reminder string) (string, string) {
 	defer func() {
 		if r := recover(); r != nil {
 			errorText(" Your reminder does not contain any date time reference! ")
@@ -261,7 +269,9 @@ func getReminderTime(reminder string) string {
 	w.Add(en.All...)
 	w.Add(common.All...)
 	r, _ := w.Parse(reminder, time.Now())
-	return r.Time.Format(DATE_TIME_LAYOUT)
+	action := strings.Replace(reminder, reminder[r.Index:r.Index+len(r.Text)], "", -1)
+	actionTime := r.Time.Format(DATE_TIME_LAYOUT)
+	return action, actionTime
 }
 
 func listenReminderQueue() {
@@ -270,10 +280,18 @@ func listenReminderQueue() {
 		for _, r := range reminderList {
 			now := time.Now().Format(DATE_TIME_LAYOUT)
 			if r.RemindAt == now {
-				successText(r.Description)
+				desktopNotifier("Task Reminder!", r.Description)
 				tm.MarkAsCompleteTask(r.Id)
 			}
 		}
 		time.Sleep(time.Second * REFRESH_RATE)
 	}
+}
+
+func desktopNotifier(title, body string) {
+	notify = notificator.New(notificator.Options{
+		DefaultIcon: "default.png",
+		AppName:     "My test App",
+	})
+	notify.Push(title, body, "default.png", notificator.UR_NORMAL)
 }
