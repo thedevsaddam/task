@@ -4,6 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/fatih/color"
+	"github.com/olebedev/when"
+	"github.com/olebedev/when/rules/common"
+	"github.com/olebedev/when/rules/en"
 	"github.com/olekukonko/tablewriter"
 	"github.com/segmentio/go-prompt"
 	"github.com/thedevsaddam/task/taskmanager"
@@ -11,6 +14,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const USAGE = `Usage:
@@ -43,8 +47,10 @@ const USAGE = `Usage:
 `
 
 const (
-	COMPLETED_MARK = "\u2713"
-	PENDING_MARK   = "\u2613"
+	COMPLETED_MARK   = "\u2713"
+	PENDING_MARK     = "\u2613"
+	DATE_TIME_LAYOUT = "2006-01-02 15:04"
+	REFRESH_RATE     = 40
 )
 
 //task manager instance
@@ -67,8 +73,16 @@ func main() {
 			warningText(" Task description can not be empty \n")
 			return
 		}
-		tm.Add(strings.Join(args[1:], " "), "")
+		tm.Add(strings.Join(args[1:], " "), "", "")
 		successText(" Added to list: " + strings.Join(args[1:], " ") + " ")
+	case cmd == "reminder" || cmd == "remind" || cmd == "remind-me" && argsLen >= 1:
+		if len(args[1:]) <= 0 {
+			warningText(" Task/Reminder description can not be empty \n")
+			return
+		}
+		reminder := strings.Join(args[1:], " ")
+		tm.Add(reminder, "", getReminderTime(reminder))
+		successText(" Reminder Added: " + strings.Join(args[1:], " ") + " ")
 	case cmd == "p" || cmd == "pending" && argsLen == 1:
 		showTasksInTable(tm.GetPendingTasks())
 	case cmd == "del" || cmd == "delete" && argsLen == 1:
@@ -136,6 +150,8 @@ func main() {
 			return
 		}
 		successText(" Database flushed successfully! ")
+	case cmd == "listen-reminder-queue" && argsLen == 1:
+		listenReminderQueue()
 	case cmd == "h" || cmd == "v":
 		fmt.Fprint(os.Stderr, USAGE)
 	default:
@@ -233,4 +249,31 @@ func pendingMark() string {
 		pending = "x"
 	}
 	return pending
+}
+
+func getReminderTime(reminder string) string {
+	defer func() {
+		if r := recover(); r != nil {
+			errorText(" Your reminder does not contain any date time reference! ")
+		}
+	}()
+	w := when.New(nil)
+	w.Add(en.All...)
+	w.Add(common.All...)
+	r, _ := w.Parse(reminder, time.Now())
+	return r.Time.Format(DATE_TIME_LAYOUT)
+}
+
+func listenReminderQueue() {
+	for {
+		reminderList := tm.GetReminderTasks()
+		for _, r := range reminderList {
+			now := time.Now().Format(DATE_TIME_LAYOUT)
+			if r.RemindAt == now {
+				successText(r.Description)
+				tm.MarkAsCompleteTask(r.Id)
+			}
+		}
+		time.Sleep(time.Second * REFRESH_RATE)
+	}
 }

@@ -7,6 +7,12 @@
 			"revision": ""
 		},
 		{
+			"checksumSHA1": "ErMS+JDb3UuJQiCNovvknd/xeJ4=",
+			"path": "github.com/AlekSi/pointer",
+			"revision": "08a25bac605b3fcb6cc27f3917b2c2c87451963d",
+			"revisionTime": "2017-01-05T16:04:40Z"
+		},
+		{
 			"checksumSHA1": "AANTVr9CVVyzsgviODY6Wi2thuM=",
 			"path": "github.com/fatih/color",
 			"revision": "62e9147c64a1ed519147b62a56a14e83e2be02c1",
@@ -37,10 +43,46 @@
 			"revisionTime": "2017-05-10T07:48:58Z"
 		},
 		{
+			"checksumSHA1": "1cD/Rsg7Fuxk8AtSlkFbVXy6Z74=",
+			"path": "github.com/olebedev/when",
+			"revision": "175108fec17fb14cc3d4f0ec49e55fee9eaeadd8",
+			"revisionTime": "2017-05-19T06:39:12Z"
+		},
+		{
+			"checksumSHA1": "sBD0ICrArfbjm1XfbwqhRRBBKRg=",
+			"path": "github.com/olebedev/when/rules",
+			"revision": "175108fec17fb14cc3d4f0ec49e55fee9eaeadd8",
+			"revisionTime": "2017-05-19T06:39:12Z"
+		},
+		{
+			"checksumSHA1": "9M6aBZjAmfvpTd0sdi6NhxW8TOA=",
+			"path": "github.com/olebedev/when/rules/common",
+			"revision": "175108fec17fb14cc3d4f0ec49e55fee9eaeadd8",
+			"revisionTime": "2017-05-19T06:39:12Z"
+		},
+		{
+			"checksumSHA1": "4jB+2fpFPYoNcim/AxCUeO8OaOE=",
+			"path": "github.com/olebedev/when/rules/en",
+			"revision": "175108fec17fb14cc3d4f0ec49e55fee9eaeadd8",
+			"revisionTime": "2017-05-19T06:39:12Z"
+		},
+		{
+			"checksumSHA1": "xr9Zja3ua4NblzIUgWu2wqFuNL8=",
+			"path": "github.com/olebedev/when/rules/ru",
+			"revision": "175108fec17fb14cc3d4f0ec49e55fee9eaeadd8",
+			"revisionTime": "2017-05-19T06:39:12Z"
+		},
+		{
 			"checksumSHA1": "3DXd47ue3PGGyFBGXqXSOI/iIeI=",
 			"path": "github.com/olekukonko/tablewriter",
 			"revision": "be5337e7b39e64e5f91445ce7e721888dbab7387",
 			"revisionTime": "2017-07-19T10:10:40Z"
+		},
+		{
+			"checksumSHA1": "rJab1YdNhQooDiBWNnt7TLWPyBU=",
+			"path": "github.com/pkg/errors",
+			"revision": "c605e284fe17294bda444b34710735b29d1a9d90",
+			"revisionTime": "2017-05-05T04:36:39Z"
 		},
 		{
 			"checksumSHA1": "llmzhtIUy63V3Pl65RuEn18ck5g=",

@@ -10,15 +10,16 @@ var tasksList = []struct {
 	description string
 	uuid        string
 	tag         string
+	remindAt    string
 }{
 	{
-		description: "Go to store", tag: "low",
+		description: "Go to store", tag: "low", remindAt: "",
 	},
 	{
-		description: "Learn golang testing", tag: "high",
+		description: "Learn golang testing", tag: "high", remindAt: "",
 	},
 	{
-		description: "Watch Pirates of the carribean", tag: "medium",
+		description: "Watch Pirates of the carribean", tag: "medium", remindAt: "",
 	},
 }
 
@@ -33,7 +34,7 @@ func TestMain(m *testing.M) {
 
 func TestTasks_Add(t *testing.T) {
 	for _, t := range tasksList {
-		tm.Add(t.description, t.tag)
+		tm.Add(t.description, t.tag, t.remindAt)
 	}
 	if 3 != len(tasksList) {
 		t.Error("Task count does not matched!")
@@ -174,7 +175,7 @@ func TestTasks_dbFile(t *testing.T) {
 func BenchmarkTasks_Add(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		for _, task := range tasksList {
-			tm.Add(task.description, task.tag)
+			tm.Add(task.description, task.tag, task.remindAt)
 		}
 	}
 }

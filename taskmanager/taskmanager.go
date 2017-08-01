@@ -13,6 +13,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -24,6 +25,7 @@ type (
 		Tag         string `json:"tag"`
 		Created     string `json:"created"`
 		Updated     string `json:"updated"`
+		RemindAt    string `json:"remind_at"`
 		Completed   string `json:"completed"`
 	}
 
@@ -35,13 +37,15 @@ const (
 	TIME_LAYOUT = "Mon, 01/02/06, 03:04PM"
 )
 
+var mutex sync.Mutex
+
 func New() Tasks {
 	return readDBFile()
 }
 
 //create a new task
-func (t *Tasks) Add(description, tag string) Task {
-	_t := Task{Id: t.GetNextId(), UID: uid(), Description: description, Tag: tag, Created: time.Now().Format(TIME_LAYOUT), Completed: ""}
+func (t *Tasks) Add(description, tag string, remind string) Task {
+	_t := Task{Id: t.GetNextId(), UID: uid(), Description: description, Tag: tag, Created: time.Now().Format(TIME_LAYOUT), RemindAt: remind, Completed: ""}
 	*t = append(*t, _t)
 	writeDBFile(*t)
 	return _t
@@ -75,6 +79,18 @@ func (t Tasks) GetPendingTasks() Tasks {
 	}
 	sort.Sort(pendingTasks)
 	return pendingTasks
+}
+
+//get reminder task
+func (t Tasks) GetReminderTasks() Tasks {
+	var reminderList Tasks
+	tasks := readDBFile()
+	for _, item := range tasks {
+		if item.RemindAt != "" && item.Completed == "" {
+			reminderList = append(reminderList, item) //only uncompleted reminder
+		}
+	}
+	return reminderList
 }
 
 //get a task
@@ -286,6 +302,8 @@ func dbFile() string {
 //load database
 func readDBFile() Tasks {
 	//load the json to task
+	mutex.Lock()
+	defer mutex.Unlock()
 	file, e := ioutil.ReadFile(dbFile())
 	if e != nil {
 		fmt.Printf("File error: %v\n", e)
@@ -298,6 +316,8 @@ func readDBFile() Tasks {
 
 //write to json
 func writeDBFile(tasks Tasks) {
+	mutex.Lock()
+	defer mutex.Unlock()
 	removeDBFileIfExist()
 	taskJson, _ := json.Marshal(tasks)
 	e := ioutil.WriteFile(dbFile(), taskJson, 0644)
