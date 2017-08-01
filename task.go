@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/0xAX/notificator"
+	"github.com/ProtonMail/go-autostart"
 	"github.com/fatih/color"
 	"github.com/olebedev/when"
 	"github.com/olebedev/when/rules/common"
@@ -47,6 +48,10 @@ const USAGE = `Usage:
 		Mark task of ID as pending
 	$ task flush
 		Flush the database!
+	$ task service-start
+		Run task as service if you are using reminder
+	$ task service-stop
+		Unregister Task from service!
 `
 
 const (
@@ -61,6 +66,12 @@ var (
 	tm = taskmanager.New()
 	//notifier
 	notify *notificator.Notificator
+	//run a service
+	service = autostart.App{
+		Name:        "thedevsaddam_task",
+		DisplayName: "Task",
+		Exec:        []string{"bash", "-c", "task", "listen-reminder-queue", "&"},
+	}
 )
 
 func main() {
@@ -158,6 +169,10 @@ func main() {
 			return
 		}
 		successText(" Database flushed successfully! ")
+	case cmd == "service-start" && argsLen == 1:
+		serviceStart()
+	case cmd == "service-siop" && argsLen == 1:
+		serviceStop()
 	case cmd == "listen-reminder-queue" && argsLen == 1:
 		listenReminderQueue()
 	case cmd == "h" || cmd == "v":
@@ -259,6 +274,7 @@ func pendingMark() string {
 	return pending
 }
 
+//parse reminder
 func parseReminder(reminder string) (string, string) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -274,6 +290,7 @@ func parseReminder(reminder string) (string, string) {
 	return action, actionTime
 }
 
+//listen for reminder queue
 func listenReminderQueue() {
 	for {
 		reminderList := tm.GetReminderTasks()
@@ -288,10 +305,35 @@ func listenReminderQueue() {
 	}
 }
 
+//send desktop notification
 func desktopNotifier(title, body string) {
 	notify = notificator.New(notificator.Options{
 		DefaultIcon: "default.png",
 		AppName:     "My test App",
 	})
 	notify.Push(title, body, "default.png", notificator.UR_NORMAL)
+}
+
+//enable auto start
+func serviceStart() {
+	if service.IsEnabled() {
+		warningText("Task is already enabled as service!")
+	} else {
+		if err := service.Enable(); err != nil {
+			errorText(err.Error())
+		}
+		successText("Task has been registered as service!")
+	}
+}
+
+//disable auto start
+func serviceStop() {
+	if service.IsEnabled() {
+		if err := service.Disable(); err != nil {
+			errorText(err.Error())
+		}
+		successText("Task has been removed from service!")
+	} else {
+		warningText("Task was not registered as service!")
+	}
 }

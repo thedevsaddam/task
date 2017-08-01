@@ -19,6 +19,12 @@
 			"revisionTime": "2017-01-05T16:04:40Z"
 		},
 		{
+			"checksumSHA1": "NrWs7vLYZAcDq117/eb2K/3H7Yc=",
+			"path": "github.com/ProtonMail/go-autostart",
+			"revision": "a62cac4ac4691cf6e94acff3b86d958ac5630448",
+			"revisionTime": "2017-01-30T18:36:13Z"
+		},
+		{
 			"checksumSHA1": "AANTVr9CVVyzsgviODY6Wi2thuM=",
 			"path": "github.com/fatih/color",
 			"revision": "62e9147c64a1ed519147b62a56a14e83e2be02c1",
