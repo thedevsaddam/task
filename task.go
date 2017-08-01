@@ -277,8 +277,8 @@ func parseReminder(reminder string) (string, string) {
 func listenReminderQueue() {
 	for {
 		reminderList := tm.GetReminderTasks()
+		now := time.Now().Format(DATE_TIME_LAYOUT)
 		for _, r := range reminderList {
-			now := time.Now().Format(DATE_TIME_LAYOUT)
 			if r.RemindAt == now {
 				desktopNotifier("Task Reminder!", r.Description)
 				tm.MarkAsCompleteTask(r.Id)
