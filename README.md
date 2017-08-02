@@ -69,7 +69,7 @@ export TASK_DB_FILE_PATH=/home/thedevsaddam/Dropbox/mytasks.json
     ```
 * To start the program as service (Note: Must use as service if you are using **reminder**)
     ```bash
-    $ task srvice-start # Start a service
+    $ task srvice-start # Start service
     $ task srvice-force-start # Forcefully start service
     $ task service-stop #stop service
     ```
@@ -109,6 +109,7 @@ $ sh build.sh
 - [x] Desktop notifier
 - [ ] Recurring reminder
 - [ ] Reminder voice
+- [ ] Reminder support for windows
 - [ ] Code review
 
 ### Some awesome packages are used to make this awesome task :)
