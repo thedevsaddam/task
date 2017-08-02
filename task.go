@@ -21,9 +21,9 @@ import (
 
 const USAGE = `Usage:
 	Name:
-		Task manager
+		Terminal Task
 	Description:
-		Your favourite task list or todo manager
+		Your favourite task manager and reminder!
 	Version:
 		1.0.0
 	$ task
@@ -70,7 +70,7 @@ var (
 	service = autostart.App{
 		Name:        "thedevsaddam_task",
 		DisplayName: "Task",
-		Exec:        []string{"/usr/local/bin/task listen-reminder-queue"},
+		Exec:        []string{"/usr/local/bin/task", "listen-reminder-queue"},
 	}
 )
 
