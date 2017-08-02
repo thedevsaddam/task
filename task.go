@@ -32,7 +32,7 @@ const USAGE = `Usage:
 		Show all pending tasks
 	$ task a Watch Games of thrones
 		Add a new task [Watch Games of thrones] to list
-	$ task remind Call John tomorrow at 10:30pm
+	$ task remind Meeting with John tomorrow at 10:30pm
 		This will send you a desktop notification
 	$ task del
 		Remove latest task from list
