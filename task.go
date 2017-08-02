@@ -70,7 +70,7 @@ var (
 	service = autostart.App{
 		Name:        "thedevsaddam_task",
 		DisplayName: "Task",
-		Exec:        []string{"bash", "-c", "task", "listen-reminder-queue", "&"},
+		Exec:        []string{"/usr/local/bin/task listen-reminder-queue"},
 	}
 )
 
@@ -171,7 +171,9 @@ func main() {
 		successText(" Database flushed successfully! ")
 	case cmd == "service-start" && argsLen == 1:
 		serviceStart()
-	case cmd == "service-siop" && argsLen == 1:
+	case cmd == "service-force-start" && argsLen == 1:
+		serviceForceStart()
+	case cmd == "service-stop" && argsLen == 1:
 		serviceStop()
 	case cmd == "listen-reminder-queue" && argsLen == 1:
 		listenReminderQueue()
@@ -309,7 +311,7 @@ func listenReminderQueue() {
 func desktopNotifier(title, body string) {
 	notify = notificator.New(notificator.Options{
 		DefaultIcon: "default.png",
-		AppName:     "My test App",
+		AppName:     "Terminal Task",
 	})
 	notify.Push(title, body, "default.png", notificator.UR_NORMAL)
 }
@@ -336,4 +338,10 @@ func serviceStop() {
 	} else {
 		warningText("Task was not registered as service!")
 	}
+}
+
+//force start
+func serviceForceStart() {
+	serviceStop()
+	serviceStart()
 }
