@@ -13,7 +13,7 @@ $ sudo chmod +x /usr/local/bin/task
 For windows download the binary and set environment variable so that you can access the binary from terminal
 
 ### Custom File Path
-If you are interested to sync the task in dropbox/google drive, you can set a custom path. To set a custom path
+If you are interested to sync the task in Dropbox/Google drive, you can set a custom path. To set a custom path
  open your `.bashrc` or `.bash_profile` and add this line `export TASK_DB_FILE_PATH=Your file path`
  
  Example File path
@@ -31,7 +31,7 @@ export TASK_DB_FILE_PATH=/home/thedevsaddam/Dropbox/mytasks.json
     ```bash
     $ task a Pirates of the Caribbean: Dead Men Tell No Tales
     ```
-* Add a reminder task to list
+* Add a **reminder** task to list
     ```bash
     $ task reminder Meeting with Jane next wednesday at 2:30pm
     ```
@@ -113,13 +113,13 @@ $ sh build.sh
 - [ ] Code review
 
 ### Some awesome packages are used to make this awesome task :)
-* [Notifier](github.com/0xAX/notificator)
-* [Auto start/service](github.com/ProtonMail/go-autostart)
-* [Color](github.com/fatih/color)
-* [Natural date parser](github.com/olebedev/when)
-* [Table writter](github.com/olekukonko/tablewriter)
-* [Go prompt](github.com/segmentio/go-prompt)
-* [Task manager](github.com/thedevsaddam/task/taskmanager)
+* [Notifier](https://github.com/0xAX/notificator)
+* [Auto start/service](https://github.com/ProtonMail/go-autostart)
+* [Color](https://github.com/fatih/color)
+* [Natural date parser](https://github.com/olebedev/when)
+* [Table writter](https://github.com/olekukonko/tablewriter)
+* [Go prompt](https://github.com/segmentio/go-prompt)
+* [Task manager](https://github.com/thedevsaddam/task/taskmanager)
 
 ### Contribution
 There are some tasks that need to be done. I have tried to make a minimal setup, need more code refactoring, review, bug fixing and adding features.
