@@ -84,8 +84,7 @@ func (t Tasks) GetPendingTasks() Tasks {
 //get reminder task
 func (t Tasks) GetReminderTasks() Tasks {
 	var reminderList Tasks
-	tasks := readDBFile()
-	for _, item := range tasks {
+	for _, item := range t {
 		if item.RemindAt != "" && item.Completed == "" {
 			reminderList = append(reminderList, item) //only uncompleted reminder
 		}
@@ -246,7 +245,8 @@ func (t Tasks) getIndexIdNo(id int) (int, error) {
 }
 
 //flush database
-func (t Tasks) FlushDB() error {
+func (t *Tasks) FlushDB() error {
+	*t = Tasks{}
 	removeDBFileIfExist()
 	createDBFileIfNotExist()
 	return nil
