@@ -281,6 +281,7 @@ func parseReminder(reminder string) (string, string) {
 	defer func() {
 		if r := recover(); r != nil {
 			errorText(" Your reminder does not contain any date time reference! ")
+			os.Exit(1)
 		}
 	}()
 	w := when.New(nil)
@@ -295,12 +296,13 @@ func parseReminder(reminder string) (string, string) {
 //listen for reminder queue
 func listenReminderQueue() {
 	for {
-		reminderList := tm.GetReminderTasks()
+		rm := taskmanager.New()
+		reminderList := rm.GetReminderTasks()
 		now := time.Now().Format(DATE_TIME_LAYOUT)
 		for _, r := range reminderList {
 			if r.RemindAt == now {
 				desktopNotifier("Task Reminder!", r.Description)
-				tm.MarkAsCompleteTask(r.Id)
+				rm.MarkAsCompleteTask(r.Id)
 			}
 		}
 		time.Sleep(time.Second * REFRESH_RATE)
