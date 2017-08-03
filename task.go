@@ -23,7 +23,7 @@ const USAGE = `Usage:
 	Name:
 		Terminal Task
 	Description:
-		Your favourite task manager and reminder!
+		Your favorite terminal task manager and reminder!
 	Version:
 		1.0.0
 	$ task
@@ -68,7 +68,7 @@ var (
 	notify *notificator.Notificator
 	//run a service
 	service = autostart.App{
-		Name:        "thedevsaddam_task",
+		Name:        "thedevsaddam_terminal_task",
 		DisplayName: "Task",
 		Exec:        []string{"/usr/local/bin/task", "listen-reminder-queue"},
 	}
