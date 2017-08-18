@@ -104,6 +104,15 @@ func TestTasks_GetCompletedTasks(t *testing.T) {
 	}
 }
 
+func TestTasks_GetReminderTasks(t *testing.T) {
+	reminders := tm.GetReminderTasks()
+	for _, r := range reminders{
+		if len(r.RemindAt)<=0{
+			t.Error("Failed to get reminder tasks!")
+		}
+	}
+}
+
 func TestTasks_MarkAsPendingTask(t *testing.T) {
 	taskId := 1
 	task, err := tm.MarkAsPendingTask(taskId)
@@ -183,6 +192,12 @@ func BenchmarkTasks_Add(b *testing.B) {
 func BenchmarkTasks_GetAllTasks(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		tm.GetAllTasks()
+	}
+}
+
+func BenchmarkTasks_GetReminderTasks(b *testing.B) {
+	for n:=0; n<  b.N; n++{
+		tm.GetReminderTasks()
 	}
 }
 
