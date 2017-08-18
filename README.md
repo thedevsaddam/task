@@ -3,7 +3,7 @@ Terminal tasks todo tool for geek
 
 ![Task screenshot](https://raw.githubusercontent.com/thedevsaddam/task/master/screenshot.png)
 
-**[Dwnloads Binaries from here](https://github.com/thedevsaddam/task_binaries)**
+### [Download Binary](https://github.com/thedevsaddam/task_binaries)
 
 Mac/Linux download the binary
 ```bash
@@ -101,7 +101,7 @@ $ govendor sync
 
 In unix system use
 ```bash
-$ sh build.sh
+$ ./build
 ```
 
 ### Roadmap
