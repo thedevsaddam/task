@@ -1,4 +1,9 @@
 # Task
+=========
+[![Build Status](https://travis-ci.org/thedevsaddam/task.svg?branch=master)](https://travis-ci.org/thedevsaddam/task)
+![Project status](https://img.shields.io/badge/version-1.0-green.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/thedevsaddam/task)](https://goreportcard.com/report/github.com/thedevsaddam/task)
+
 Terminal tasks todo tool for geek
 
 ![Task screenshot](https://raw.githubusercontent.com/thedevsaddam/task/master/screenshot.png)
@@ -15,7 +20,7 @@ For windows download the binary and set environment variable so that you can acc
 ### Custom File Path
 If you are interested to sync the task in Dropbox/Google drive, you can set a custom path. To set a custom path
  open your `.bashrc` or `.bash_profile` and add this line `export TASK_DB_FILE_PATH=Your file path`
- 
+
  Example File path
  ```bash
 export TASK_DB_FILE_PATH=/home/thedevsaddam/Dropbox  # default file name will be .task.json
@@ -73,7 +78,7 @@ export TASK_DB_FILE_PATH=/home/thedevsaddam/Dropbox/mytasks.json
     $ task service-force-start # Forcefully start service
     $ task service-stop #stop service
     ```
-    
+
 ##### Examples of reminder
 ```bash
 $ task remind Take a cup of coffee in 30min
@@ -103,14 +108,6 @@ In unix system use
 ```bash
 $ ./build
 ```
-
-### Roadmap
-- [x] Add reminder
-- [x] Desktop notifier
-- [ ] Recurring reminder
-- [ ] Reminder voice
-- [ ] Reminder support for windows
-- [ ] Code review
 
 ### Some awesome packages are used to make this awesome task :)
 * [Notifier](https://github.com/0xAX/notificator)
