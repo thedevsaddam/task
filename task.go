@@ -3,6 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
+	"runtime"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/0xAX/notificator"
 	"github.com/ProtonMail/go-autostart"
 	"github.com/fatih/color"
@@ -12,14 +18,9 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"github.com/segmentio/go-prompt"
 	"github.com/thedevsaddam/task/taskmanager"
-	"os"
-	"runtime"
-	"strconv"
-	"strings"
-	"time"
 )
 
-const USAGE = `Usage:
+const usage = `Usage:
 	Name:
 		Terminal Task
 	Description:
@@ -77,7 +78,7 @@ var (
 func main() {
 
 	flag.Usage = func() {
-		fmt.Fprint(os.Stderr, USAGE)
+		fmt.Fprint(os.Stderr, usage)
 		flag.PrintDefaults()
 	}
 	flag.Parse()
@@ -178,10 +179,10 @@ func main() {
 	case cmd == "listen-reminder-queue" && argsLen == 1:
 		listenReminderQueue()
 	case cmd == "h" || cmd == "v":
-		fmt.Fprint(os.Stderr, USAGE)
+		fmt.Fprint(os.Stderr, usage)
 	default:
 		errorText(" [No command found by " + cmd + "] ")
-		fmt.Fprint(os.Stderr, "\n"+USAGE)
+		fmt.Fprint(os.Stderr, "\n"+usage)
 	}
 
 }

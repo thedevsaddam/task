@@ -106,8 +106,8 @@ func TestTasks_GetCompletedTasks(t *testing.T) {
 
 func TestTasks_GetReminderTasks(t *testing.T) {
 	reminders := tm.GetReminderTasks()
-	for _, r := range reminders{
-		if len(r.RemindAt)<=0{
+	for _, r := range reminders {
+		if len(r.RemindAt) <= 0 {
 			t.Error("Failed to get reminder tasks!")
 		}
 	}
@@ -196,7 +196,7 @@ func BenchmarkTasks_GetAllTasks(b *testing.B) {
 }
 
 func BenchmarkTasks_GetReminderTasks(b *testing.B) {
-	for n:=0; n<  b.N; n++{
+	for n := 0; n < b.N; n++ {
 		tm.GetReminderTasks()
 	}
 }
