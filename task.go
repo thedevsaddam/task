@@ -56,10 +56,10 @@ const usage = `Usage:
 `
 
 const (
-	completed_mark   = "\u2713"
-	pending_mark     = "\u2613"
-	date_time_layout = "2006-01-02 15:04"
-	refresh_rate     = 40
+	completedSign  = "\u2713"
+	pendingSign    = "\u2613"
+	dateTimeLayout = "2006-01-02 15:04"
+	refreshRate    = 40
 )
 
 var (
@@ -141,7 +141,7 @@ func main() {
 			errorText(err.Error())
 			return
 		}
-		successText(" " + completed_mark + " " + task.Description)
+		successText(" " + completedSign + " " + task.Description)
 	case cmd == "i" || cmd == "p" || cmd == "pending" && argsLen >= 2:
 		id, _ := strconv.Atoi(flag.Arg(1))
 		task, err := tm.MarkAsPendingTask(id)
@@ -191,16 +191,16 @@ func main() {
 func showTasksInTable(tasks taskmanager.Tasks) {
 	fmt.Fprintln(os.Stdout, "")
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ID", "Description", completed_mark + "/" + pendingMark(), "Created"})
+	table.SetHeader([]string{"ID", "Description", completedSign + "/" + pendingMark(), "Created"})
 	table.SetBorders(tablewriter.Border{Left: true, Top: true, Right: true, Bottom: false})
 	table.SetFooter([]string{"", "Total: " + strconv.Itoa(tm.TotalTask()), "", "Pending: " + strconv.Itoa(tm.PendingTask())})
 	table.SetCenterSeparator("|")
 	table.SetRowLine(true)
 	for _, task := range tasks {
 		//set completed icon
-		status := pending_mark
+		status := pendingSign
 		if task.Completed != "" {
-			status = completed_mark
+			status = completedSign
 		} else {
 			status = pendingMark()
 		}
@@ -270,7 +270,7 @@ func errorText(str string) {
 }
 
 func pendingMark() string {
-	pending := pending_mark
+	pending := pendingSign
 	if runtime.GOOS == "windows" {
 		pending = "x"
 	}
@@ -290,7 +290,7 @@ func parseReminder(reminder string) (string, string) {
 	w.Add(common.All...)
 	r, _ := w.Parse(reminder, time.Now())
 	action := strings.Replace(reminder, reminder[r.Index:r.Index+len(r.Text)], "", -1)
-	actionTime := r.Time.Format(date_time_layout)
+	actionTime := r.Time.Format(dateTimeLayout)
 	return action, actionTime
 }
 
@@ -299,14 +299,14 @@ func listenReminderQueue() {
 	for {
 		rm := taskmanager.New()
 		reminderList := rm.GetReminderTasks()
-		now := time.Now().Format(date_time_layout)
+		now := time.Now().Format(dateTimeLayout)
 		for _, r := range reminderList {
 			if r.RemindAt == now {
 				desktopNotifier("Task Reminder!", r.Description)
 				rm.MarkAsCompleteTask(r.Id)
 			}
 		}
-		time.Sleep(time.Second * refresh_rate)
+		time.Sleep(time.Second * refreshRate)
 	}
 }
 
