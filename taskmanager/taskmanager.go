@@ -18,6 +18,7 @@ import (
 )
 
 type (
+	// Task describes a task object
 	Task struct {
 		Id          int    `json:"id"`
 		UID         string `json:"uid"`
@@ -29,21 +30,25 @@ type (
 		Completed   string `json:"completed"`
 	}
 
+	// Tasks represents a list of Task object
 	Tasks []Task
 )
 
 const (
-	DB_FILE     = ".task.json"
+	// DB_FILE is the default storage file path
+	DB_FILE = ".task.json"
+	// TIME_LAYOUT default time layout for task application
 	TIME_LAYOUT = "Mon, 01/02/06, 03:04PM"
 )
 
 var mutex sync.Mutex
 
+// New return a Task list instance
 func New() Tasks {
 	return readDBFile()
 }
 
-//create a new task
+//Add create a new task
 func (t *Tasks) Add(description, tag string, remind string) Task {
 	_t := Task{Id: t.GetNextId(), UID: uid(), Description: description, Tag: tag, Created: time.Now().Format(TIME_LAYOUT), RemindAt: remind, Completed: ""}
 	*t = append(*t, _t)
@@ -51,13 +56,13 @@ func (t *Tasks) Add(description, tag string, remind string) Task {
 	return _t
 }
 
-//get all tasks
+//GetAllTasks fetch all tasks
 func (t Tasks) GetAllTasks() Tasks {
 	sort.Sort(t)
 	return t
 }
 
-//get completed tasks
+//GetCompletedTasks fetch all completed tasks
 func (t Tasks) GetCompletedTasks() Tasks {
 	var completedTasks Tasks
 	for _, item := range t {
@@ -69,7 +74,7 @@ func (t Tasks) GetCompletedTasks() Tasks {
 	return completedTasks
 }
 
-//get pending tasks
+//GetPendingTasks fetch all pending tasks
 func (t Tasks) GetPendingTasks() Tasks {
 	var pendingTasks Tasks
 	for _, item := range t {
@@ -81,7 +86,7 @@ func (t Tasks) GetPendingTasks() Tasks {
 	return pendingTasks
 }
 
-//get reminder task
+//GetReminderTasks fetch all the reminder tasks
 func (t Tasks) GetReminderTasks() Tasks {
 	var reminderList Tasks
 	for _, item := range t {
@@ -92,7 +97,7 @@ func (t Tasks) GetReminderTasks() Tasks {
 	return reminderList
 }
 
-//get a task
+//GetTask fetch a single task
 func (t Tasks) GetTask(id int) (Task, error) {
 	if err := t.isValidId(id); err != nil {
 		return Task{}, err
@@ -104,7 +109,7 @@ func (t Tasks) GetTask(id int) (Task, error) {
 	return t[i], nil
 }
 
-//update a task by id
+//UpdateTask update a task by id
 func (t *Tasks) UpdateTask(id int, description string) (string, error) {
 	if err := t.isValidId(id); err != nil {
 		return fmt.Sprintf("Unable to update %s", description), err
@@ -120,7 +125,7 @@ func (t *Tasks) UpdateTask(id int, description string) (string, error) {
 	return fmt.Sprintf("Task Updated: %s --> %s", oldDescription, description), nil
 }
 
-//update a task tag by id
+//UpdateTaskTag update a task's tag by id
 func (t *Tasks) UpdateTaskTag(id int, tag string) (string, error) {
 	if err := t.isValidId(id); err != nil {
 		return fmt.Sprintf("Unable to update %s", tag), err
@@ -136,7 +141,7 @@ func (t *Tasks) UpdateTaskTag(id int, tag string) (string, error) {
 	return fmt.Sprintf("Task Updated: %s --> %s", oldTag, tag), nil
 }
 
-//mark a task as completed by id
+//MarkAsCompleteTask mark a task as completed by id
 func (t *Tasks) MarkAsCompleteTask(id int) (Task, error) {
 	if err := t.isValidId(id); err != nil {
 		return Task{}, err
@@ -150,7 +155,7 @@ func (t *Tasks) MarkAsCompleteTask(id int) (Task, error) {
 	return (*t)[i], nil
 }
 
-//mark a task as pending by id
+//MarkAsPendingTask mark a task as pending by id
 func (t *Tasks) MarkAsPendingTask(id int) (Task, error) {
 	if err := t.isValidId(id); err != nil {
 		return Task{}, err
@@ -164,8 +169,7 @@ func (t *Tasks) MarkAsPendingTask(id int) (Task, error) {
 	return (*t)[i], nil
 }
 
-//remove a task by id
-//ref https://stackoverflow.com/questions/18566499/how-to-remove-an-item-from-a-slice-by-calling-a-method-on-the-slice
+//RemoveTask delete a task by id
 func (t *Tasks) RemoveTask(id int) error {
 	if err := t.isValidId(id); err != nil {
 		return err
@@ -179,12 +183,12 @@ func (t *Tasks) RemoveTask(id int) error {
 	return nil
 }
 
-//get total task
+//TotalTask return total task count
 func (t Tasks) TotalTask() int {
 	return len(t)
 }
 
-//get total completed task
+//CompletedTask return total completed task count
 func (t Tasks) CompletedTask() int {
 	completed_task := 0
 	for _, i := range t {
@@ -195,12 +199,12 @@ func (t Tasks) CompletedTask() int {
 	return completed_task
 }
 
-//get total pending task
+//PendingTask return total pending task count
 func (t Tasks) PendingTask() int {
 	return len(t) - t.CompletedTask()
 }
 
-//get last inserted id
+//GetLastId return last inserted id
 func (t Tasks) GetLastId() int {
 	if t.TotalTask() <= 0 {
 		return 0
@@ -214,7 +218,7 @@ func (t Tasks) GetLastId() int {
 	return maxId
 }
 
-//get next id
+//GetNextId return next id
 func (t Tasks) GetNextId() int {
 	return t.GetLastId() + 1
 }
@@ -253,14 +257,17 @@ func (t *Tasks) FlushDB() error {
 }
 
 //implement the sort interface
+// Len return total length of task list
 func (t Tasks) Len() int {
 	return len(t)
 }
 
+// Less order the task as descending order
 func (t Tasks) Less(i, j int) bool {
 	return t[i].Id > t[j].Id
 }
 
+// Swap tasks
 func (t Tasks) Swap(i, j int) {
 	t[i], t[j] = t[j], t[i]
 }
