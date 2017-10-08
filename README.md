@@ -69,8 +69,8 @@ export TASK_DB_FILE_PATH=/home/thedevsaddam/Dropbox/mytasks.json
     ```
 * To start the program as service (Note: Must use as service if you are using **reminder**)
     ```bash
-    $ task srvice-start # Start service
-    $ task srvice-force-start # Forcefully start service
+    $ task service-start # Start service
+    $ task service-force-start # Forcefully start service
     $ task service-stop #stop service
     ```
     
