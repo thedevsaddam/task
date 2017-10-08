@@ -100,8 +100,8 @@ func main() {
 			return
 		}
 		reminder := strings.Join(args[1:], " ")
-		action, action_when := parseReminder(reminder)
-		tm.Add(action, "", action_when)
+		action, actionWhen := parseReminder(reminder)
+		tm.Add(action, "", actionWhen)
 		successText(" Reminder Added: " + action + " ")
 	case cmd == "p" || cmd == "pending" && argsLen == 1:
 		showTasksInTable(tm.GetPendingTasks())
@@ -264,8 +264,8 @@ func errorText(str string) {
 	if runtime.GOOS == "windows" {
 		fmt.Fprintf(color.Output, color.RedString(str))
 	} else {
-		error_ := color.New(color.Bold, color.BgRed, color.FgWhite).FprintlnFunc()
-		error_(os.Stdout, str)
+		errColor := color.New(color.Bold, color.BgRed, color.FgWhite).FprintlnFunc()
+		errColor(os.Stdout, str)
 	}
 }
 

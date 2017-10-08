@@ -35,10 +35,10 @@ type (
 )
 
 const (
-	// DB_FILE is the default storage file path
-	DB_FILE = ".task.json"
-	// TIME_LAYOUT default time layout for task application
-	TIME_LAYOUT = "Mon, 01/02/06, 03:04PM"
+	// dbFileName is the default storage file path
+	dbFileName = ".task.json"
+	// timeLayout default time layout for task application
+	timeLayout = "Mon, 01/02/06, 03:04PM"
 )
 
 var mutex sync.Mutex
@@ -50,7 +50,7 @@ func New() Tasks {
 
 //Add create a new task
 func (t *Tasks) Add(description, tag string, remind string) Task {
-	_t := Task{Id: t.GetNextId(), UID: uid(), Description: description, Tag: tag, Created: time.Now().Format(TIME_LAYOUT), RemindAt: remind, Completed: ""}
+	_t := Task{Id: t.GetNextId(), UID: uid(), Description: description, Tag: tag, Created: time.Now().Format(timeLayout), RemindAt: remind, Completed: ""}
 	*t = append(*t, _t)
 	writeDBFile(*t)
 	return _t
@@ -120,7 +120,7 @@ func (t *Tasks) UpdateTask(id int, description string) (string, error) {
 	}
 	oldDescription := (*t)[i].Description
 	(*t)[i].Description = description
-	(*t)[i].Updated = time.Now().Format(TIME_LAYOUT)
+	(*t)[i].Updated = time.Now().Format(timeLayout)
 	writeDBFile(*t)
 	return fmt.Sprintf("Task Updated: %s --> %s", oldDescription, description), nil
 }
@@ -136,7 +136,7 @@ func (t *Tasks) UpdateTaskTag(id int, tag string) (string, error) {
 	}
 	oldTag := (*t)[i].Tag
 	(*t)[i].Tag = tag
-	(*t)[i].Updated = time.Now().Format(TIME_LAYOUT)
+	(*t)[i].Updated = time.Now().Format(timeLayout)
 	writeDBFile(*t)
 	return fmt.Sprintf("Task Updated: %s --> %s", oldTag, tag), nil
 }
@@ -150,7 +150,7 @@ func (t *Tasks) MarkAsCompleteTask(id int) (Task, error) {
 	if err != nil {
 		return Task{}, err
 	}
-	(*t)[i].Completed = time.Now().Format(TIME_LAYOUT)
+	(*t)[i].Completed = time.Now().Format(timeLayout)
 	writeDBFile(*t)
 	return (*t)[i], nil
 }
@@ -190,13 +190,13 @@ func (t Tasks) TotalTask() int {
 
 //CompletedTask return total completed task count
 func (t Tasks) CompletedTask() int {
-	completed_task := 0
+	completedTask := 0
 	for _, i := range t {
 		if i.Completed != "" {
-			completed_task++
+			completedTask++
 		}
 	}
-	return completed_task
+	return completedTask
 }
 
 //PendingTask return total pending task count
@@ -248,7 +248,7 @@ func (t Tasks) getIndexIdNo(id int) (int, error) {
 	return 0, errors.New("Invalid Id!")
 }
 
-//flush database
+//FlushDB flush task database
 func (t *Tasks) FlushDB() error {
 	*t = Tasks{}
 	removeDBFileIfExist()
@@ -293,9 +293,8 @@ func dbFile() string {
 	if env != "" {
 		if strings.HasSuffix(env, ".json") {
 			return env
-		} else {
-			return filepath.Join(filepath.Clean(env), DB_FILE)
 		}
+		return filepath.Join(filepath.Clean(env), dbFileName)
 	}
 
 	usr, err := user.Current()
@@ -303,7 +302,7 @@ func dbFile() string {
 		panic(err)
 
 	}
-	return filepath.Join(usr.HomeDir, DB_FILE)
+	return filepath.Join(usr.HomeDir, dbFileName)
 }
 
 //load database
